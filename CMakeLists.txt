@@ -21,8 +21,8 @@ include_directories(include)
 include_directories(third_party)
 
 
-find_library(GLFW_LIBRARY glfw3 HINTS ${CMAKE_SOURCE_DIR}/libs REQUIRED)
-find_library(GLEW_LIBRARY glew32s HINTS ${CMAKE_SOURCE_DIR}/libs REQUIRED)
+find_library(GLFW_LIBRARY glfw3 HINTS ${CMAKE_SOURCE_DIR}/libs ${CMAKE_SOURCE_DIR}/submodules/Engine/libs REQUIRED)
+find_library(GLEW_LIBRARY glew32s HINTS ${CMAKE_SOURCE_DIR}/libs ${CMAKE_SOURCE_DIR}/submodules/Engine/libs REQUIRED)
 find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE 
     ${GLFW_LIBRARY}
