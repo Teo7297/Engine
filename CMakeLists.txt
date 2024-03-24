@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Add your source files
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 # Add the DLL target
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
