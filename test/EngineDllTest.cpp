@@ -3,11 +3,18 @@
 class ent : public engine::Entity
 {
 public:
-    ent(std::string name) : Entity(name){};
+    ent(std::string name) : Entity(name)
+    {
+        vertices = std::vector<float>{0.0f, 0.5f, 0.0f,
+                                      -0.5f, -0.5f, 0.0f,
+                                      0.5f, -0.5f, 0.0f};
+    };
     ~ent() override{};
 
     void init() override
     {
+        Entity::init();
+
         position = glm::vec3(400, 300, 0);
         rotation = glm::angleAxis(glm::radians(45.f), glm::vec3(0.0f, 0.0f, 1.0f));
     }
