@@ -62,6 +62,9 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "vector": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "cstdarg": "cpp",
+        "functional": "cpp",
+        "fstream": "cpp"
     }
 }
