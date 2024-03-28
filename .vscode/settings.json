@@ -65,6 +65,7 @@
         "xhash": "cpp",
         "cstdarg": "cpp",
         "functional": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "engine": "cpp"
     }
 }

@@ -4,10 +4,16 @@
 
 namespace engine
 {
+    class IInput;
     class ENGINE_API Entity
     {
     public:
-        Entity(std::string name);
+        Entity()
+        {
+            std::cerr << "[ERROR] Use Engine::makeEntity to construct entities!";
+            exit(-1);
+        };
+        Entity(IInput *input, std::string name);
         virtual ~Entity(){};
 
         virtual void init(){};
@@ -47,8 +53,8 @@ namespace engine
         glm::qua<float, glm::packed_highp> rotation{glm::identity<glm::quat>()};
         int verticesCount = 3;
 
-    private:
-        // GLuint m_shaderProgram{0};
-        // GLuint m_vao{0};
+    protected:
+        IInput *m_input; // do not delete manually, this is managed by the engine
+        std::string m_name;
     };
 }

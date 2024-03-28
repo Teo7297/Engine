@@ -1,4 +1,5 @@
 #pragma once
 
+#include "IInput.h"
 #include "engine.h"
 #include "entity.h"

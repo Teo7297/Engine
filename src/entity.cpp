@@ -1,8 +1,10 @@
 #include "entity.h"
+#include "IInput.h"
 
 namespace engine
 {
-    Entity::Entity(std::string name)
+    Entity::Entity(IInput *input, std::string name)
+        : m_input{input}, m_name{name}
     {
         std::cout << "new entity! " << name << "\n";
     }
