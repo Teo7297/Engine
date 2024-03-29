@@ -50,7 +50,7 @@ namespace engine
         GLuint vao{0};
 
         glm::vec3 position{0, 0, 0};
-        glm::qua<float, glm::packed_highp> rotation{glm::identity<glm::quat>()};
+        glm::quat rotation{glm::identity<glm::quat>()};
         int verticesCount = 3;
 
     protected:

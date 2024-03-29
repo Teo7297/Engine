@@ -5,7 +5,9 @@
 namespace engine
 {
     Engine::Engine(std::string appName)
-        : m_window{nullptr},
+        : m_width{800},
+          m_height{600},
+          m_window{nullptr},
           m_renderer{nullptr},
           m_scene{},
           m_lastFrameTime{}
@@ -18,7 +20,7 @@ namespace engine
         }
 
         // Create a GLFW window
-        m_window = glfwCreateWindow(800, 600, appName.c_str(), NULL, NULL);
+        m_window = glfwCreateWindow(m_width, m_height, appName.c_str(), NULL, NULL);
         if (!m_window)
         {
             std::cerr << "Failed to create GLFW window" << std::endl;
@@ -42,11 +44,6 @@ namespace engine
     }
 
     // ################ PUBLIC ################
-    void Engine::close()
-    {
-        glfwSetWindowShouldClose(m_window, true);
-    }
-
     void Engine::start()
     {
         m_lastFrameTime = std::chrono::high_resolution_clock::now();
@@ -96,6 +93,7 @@ namespace engine
             std::chrono::duration<double, std::milli> frameTime = endTime - m_lastFrameTime;
             m_lastFrameTime = endTime;
             // std::cout << 1000.0 / frameTime.count() << " FPS\n";
+            glClear(GL_COLOR_BUFFER_BIT);
             for (auto e : m_scene)
             {
                 e->update(frameTime.count());
@@ -109,6 +107,16 @@ namespace engine
         glfwTerminate();
     }
 
+    // # INTERFACE METHODS
+    void Engine::closeApp()
+    {
+        glfwSetWindowShouldClose(m_window, true);
+    }
+
+    int Engine::getKey(int key)
+    {
+        return glfwGetKey(m_window, key);
+    }
     // ################ PRIVATE ################
 
 }

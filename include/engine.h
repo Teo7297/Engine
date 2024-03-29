@@ -14,9 +14,9 @@ namespace engine
         Engine(std::string appName);
         ~Engine();
 
-        void close();
         void start();
-        int getKey(int key) override { return glfwGetKey(m_window, key); };
+        void closeApp() override;
+        int getKey(int key) override;
 
         template <typename EntityType>
         std::shared_ptr<EntityType> makeEntity(std::string name)
@@ -31,6 +31,7 @@ namespace engine
     private:
     public:
     private:
+        unsigned int m_width, m_height;
         GLFWwindow *m_window; // do not delete manually, this is managed by glfw
         std::unique_ptr<Renderer> m_renderer;
         std::vector<std::shared_ptr<Entity>> m_scene;

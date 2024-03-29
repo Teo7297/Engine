@@ -9,5 +9,6 @@ namespace engine
     public:
         virtual ~IInput(){};
         virtual int getKey(int key) = 0;
+        virtual void closeApp() = 0;
     };
 }
