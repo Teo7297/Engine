@@ -51,6 +51,7 @@ namespace engine
 
         glm::vec3 position{0, 0, 0};
         glm::quat rotation{glm::identity<glm::quat>()};
+        glm::vec3 scale{100.f, 100.f, 0.f};
         int verticesCount = 3;
 
     protected:

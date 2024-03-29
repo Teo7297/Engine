@@ -16,7 +16,7 @@ namespace engine
         auto model =
             glm::translate(glm::identity<glm::mat4>(), position) *
             glm::mat4_cast(rotation) *
-            glm::scale(glm::identity<glm::mat4>(), glm::vec3(100.f));
+            glm::scale(glm::identity<glm::mat4>(), scale);
         auto view = glm::lookAt(glm::vec3(0, 0, 1), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
         auto proj = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1000.0f, 1000.0f);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, false, glm::value_ptr(model));
