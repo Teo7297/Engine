@@ -2,7 +2,7 @@
 
 #include "engine_includes.h"
 
-float angleBetweenVectors(const glm::vec2 vector1, const glm::vec2 vector2)
+static float angleBetweenVectors(const glm::vec2 vector1, const glm::vec2 vector2)
 {
     // Calculate dot product
     float dotProduct = glm::dot(vector1, vector2);
