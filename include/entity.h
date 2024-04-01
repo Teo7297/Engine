@@ -18,7 +18,7 @@ namespace engine
 
         virtual void init(){};
         virtual void update(const float frameTime);
-        virtual bool checkCollision(const Entity &other) { return false; };
+        virtual bool checkCollision(Entity &other) { return false; };
 
         GLuint getVAO() { return vao; }
         GLuint getShader() { return shaderProgram; }

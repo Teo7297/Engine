@@ -22,7 +22,7 @@ namespace engine
     Rectangle::~Rectangle()
     {
     }
-    bool Rectangle::checkCollision(const Entity &other)
+    bool Rectangle::checkCollision(Entity &other)
     {
         auto otherLeft = other.position.x;
         auto otherRight = other.position.x + other.scale.x;
