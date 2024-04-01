@@ -35,6 +35,7 @@ namespace engine
         GLFWwindow *m_window; // do not delete manually, this is managed by glfw
         std::unique_ptr<Renderer> m_renderer;
         std::vector<std::shared_ptr<Entity>> m_scene;
+        std::vector<std::shared_ptr<Entity>> m_physicsScene;
         std::chrono::high_resolution_clock::time_point m_lastFrameTime;
     };
 }

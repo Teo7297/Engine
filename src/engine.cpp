@@ -10,6 +10,7 @@ namespace engine
           m_window{nullptr},
           m_renderer{nullptr},
           m_scene{},
+          m_physicsScene{},
           m_lastFrameTime{}
     {
         // Initialize GLFW
@@ -84,6 +85,8 @@ namespace engine
             glBindVertexArray(0);
             glUseProgram(0);
 
+            if (e->physicsEnabled)
+                m_physicsScene.push_back(e);
             e->init();
         }
 
@@ -98,6 +101,14 @@ namespace engine
             {
                 e->update(frameTime.count());
                 m_renderer->render(e->getShader(), e->getVAO(), e->verticesCount);
+            }
+            for (auto e : m_physicsScene)
+            {
+                for (auto e2 : m_physicsScene)
+                {
+                    if (e != e2)
+                        e->checkCollision(*e2);
+                }
             }
 
             glfwPollEvents();

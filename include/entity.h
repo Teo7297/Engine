@@ -18,6 +18,7 @@ namespace engine
 
         virtual void init(){};
         virtual void update(const float frameTime);
+        virtual bool checkCollision(const Entity &other) { return false; };
 
         GLuint getVAO() { return vao; }
         GLuint getShader() { return shaderProgram; }
@@ -53,6 +54,7 @@ namespace engine
         glm::quat rotation{glm::identity<glm::quat>()};
         glm::vec3 scale{100.f, 100.f, 0.f};
         int verticesCount = 3;
+        bool physicsEnabled = false;
 
     protected:
         IInput *m_input; // do not delete manually, this is managed by the engine
