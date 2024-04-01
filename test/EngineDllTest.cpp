@@ -16,7 +16,7 @@ public:
     {
         Rectangle::init();
 
-        if (m_name == "myEntity")
+        if (m_name == "paddle")
             position = glm::vec3(400, 300, 0);
         else
             position = glm::vec3(400, 400, 0);
@@ -27,7 +27,7 @@ public:
     {
         Entity::update(frameTime);
         time += frameTime;
-        if (m_name != "myEntity")
+        if (m_name != "paddle")
             return;
         if (m_input->getKey(GLFW_KEY_UP))
         {
@@ -64,8 +64,10 @@ int main()
 {
     auto app = engine::Engine("test app");
 
-    auto e = app.makeEntity<ent>("myEntity");
-    auto e2 = app.makeEntity<ent>("myEntity2");
+    auto e = app.makeEntity<ent>("paddle");
+    e->scale = {15, 100, 0};
+    auto e2 = app.makeEntity<ent>("ball");
+    e2->scale = {15, 15, 0};
 
     app.start();
 
