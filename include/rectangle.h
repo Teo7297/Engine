@@ -14,7 +14,7 @@ namespace engine
         virtual ~Rectangle();
         virtual void init() override { Entity::init(); };
         virtual void update(float frameTime) override { Entity::update(frameTime); };
-        bool checkCollision(const Entity &other) override;
+        virtual bool checkCollision(const Entity &other) override;
 
         void setWidth(float w) { scale.x = w; };
         void setHeight(float h) { scale.y = h; };

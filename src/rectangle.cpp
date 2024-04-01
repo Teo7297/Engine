@@ -35,7 +35,7 @@ namespace engine
 
         if (thisRight >= otherLeft && thisLeft <= otherRight && thisBottom >= otherTop && thisTop <= otherBottom)
         {
-            std::cout << "collision!\n";
+            // std::cout << "collision!\n";
             return true;
         }
         return false;
