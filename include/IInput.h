@@ -11,6 +11,6 @@ namespace engine
         virtual ~IInput(){};
         virtual int getKey(int key) = 0;
         virtual void closeApp() = 0;
-        virtual std::shared_ptr<Entity> findEntityByName(std::string &name) const = 0;
+        virtual std::shared_ptr<Entity> findEntityByName(const std::string &name) const = 0;
     };
 }

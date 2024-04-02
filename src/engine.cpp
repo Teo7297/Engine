@@ -129,7 +129,7 @@ namespace engine
         return glfwGetKey(m_window, key);
     }
 
-    std::shared_ptr<Entity> Engine::findEntityByName(std::string &name) const
+    std::shared_ptr<Entity> Engine::findEntityByName(const std::string &name) const
     {
         for (auto e : m_scene)
         {
