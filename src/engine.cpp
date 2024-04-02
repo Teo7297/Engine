@@ -51,39 +51,43 @@ namespace engine
 
         for (auto e : m_scene)
         {
-            // Create and compile the vertex shader
-            auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertexShader, 1, &(e->vertexShaderSource), NULL);
-            glCompileShader(vertexShader);
+            if (e->drawEnabled)
+            {
 
-            // Create and compile the fragment shader
-            auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragmentShader, 1, &(e->fragmentShaderSource), NULL);
-            glCompileShader(fragmentShader);
+                // Create and compile the vertex shader
+                auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
+                glShaderSource(vertexShader, 1, &(e->vertexShaderSource), NULL);
+                glCompileShader(vertexShader);
 
-            // Link the vertex and fragment shader into a shader program
-            e->shaderProgram = glCreateProgram();
-            glAttachShader(e->shaderProgram, vertexShader);
-            glAttachShader(e->shaderProgram, fragmentShader);
-            glLinkProgram(e->shaderProgram);
-            glUseProgram(e->shaderProgram);
+                // Create and compile the fragment shader
+                auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+                glShaderSource(fragmentShader, 1, &(e->fragmentShaderSource), NULL);
+                glCompileShader(fragmentShader);
 
-            // Create VBO and VAO
-            GLuint VBO;
-            glGenVertexArrays(1, &(e->vao));
-            glGenBuffers(1, &VBO);
+                // Link the vertex and fragment shader into a shader program
+                e->shaderProgram = glCreateProgram();
+                glAttachShader(e->shaderProgram, vertexShader);
+                glAttachShader(e->shaderProgram, fragmentShader);
+                glLinkProgram(e->shaderProgram);
+                glUseProgram(e->shaderProgram);
 
-            glBindVertexArray(e->vao);
-            glBindBuffer(GL_ARRAY_BUFFER, VBO);
-            glBufferData(GL_ARRAY_BUFFER, e->vertices.size() * sizeof(float), e->vertices.data(), GL_STATIC_DRAW);
+                // Create VBO and VAO
+                GLuint VBO;
+                glGenVertexArrays(1, &(e->vao));
+                glGenBuffers(1, &VBO);
 
-            // Specify vertex attributes
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-            glEnableVertexAttribArray(0);
+                glBindVertexArray(e->vao);
+                glBindBuffer(GL_ARRAY_BUFFER, VBO);
+                glBufferData(GL_ARRAY_BUFFER, e->vertices.size() * sizeof(float), e->vertices.data(), GL_STATIC_DRAW);
 
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
-            glUseProgram(0);
+                // Specify vertex attributes
+                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+                glEnableVertexAttribArray(0);
+
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                glBindVertexArray(0);
+                glUseProgram(0);
+            }
 
             if (e->physicsEnabled)
                 m_physicsScene.push_back(e);
@@ -100,7 +104,8 @@ namespace engine
             for (auto e : m_scene)
             {
                 e->update(frameTime.count());
-                m_renderer->render(e->getShader(), e->getVAO(), e->verticesCount);
+                if (e->drawEnabled)
+                    m_renderer->render(e->getShader(), e->getVAO(), e->verticesCount);
             }
             for (auto e : m_physicsScene)
             {

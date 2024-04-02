@@ -56,6 +56,7 @@ namespace engine
         glm::vec3 scale{1.f, 1.f, 0.f};
         int verticesCount = 3;
         bool physicsEnabled = false;
+        bool drawEnabled = true;
 
     protected:
         IInput *m_input; // do not delete manually, this is managed by the engine
