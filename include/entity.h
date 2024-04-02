@@ -22,6 +22,7 @@ namespace engine
 
         GLuint getVAO() { return vao; }
         GLuint getShader() { return shaderProgram; }
+        const inline std::string &getName() const { return m_name; }
 
     private:
     public:

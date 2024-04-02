@@ -128,6 +128,15 @@ namespace engine
     {
         return glfwGetKey(m_window, key);
     }
-    // ################ PRIVATE ################
 
+    std::shared_ptr<Entity> Engine::findEntityByName(std::string &name)
+    {
+        for (auto e : m_scene)
+        {
+            if (name.compare(e->getName()))
+
+                return e;
+        }
+    }
+    // ################ PRIVATE ################
 }
