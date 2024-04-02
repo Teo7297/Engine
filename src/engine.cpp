@@ -138,7 +138,7 @@ namespace engine
     {
         for (auto e : m_scene)
         {
-            if (name.compare(e->getName()))
+            if (name == e->getName())
 
                 return e;
         }
