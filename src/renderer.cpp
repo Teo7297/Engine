@@ -29,7 +29,7 @@ Renderer::~Renderer()
 
 void Renderer::render(GLuint shader, GLuint vao, int verticesCount)
 {
-    if (!vao || !shader)
+    if (!vao || !shader || !verticesCount)
         return;
     glUseProgram(shader);
     GL_CHECK();
