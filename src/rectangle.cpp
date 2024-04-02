@@ -36,13 +36,13 @@ namespace engine
 
         if (thisRight >= otherLeft && thisLeft <= otherRight && thisBottom >= otherTop && thisTop <= otherBottom)
         {
-            std::cout << "collision! " << m_name << "\n";
-            std::cout << scale.x << ", " << scale.y << " - " << other.scale.x << ", " << other.scale.y << "\n";
-            std::cout << position.x << ", " << position.y << " - " << other.position.x << ", " << other.position.y << "\n";
-            std::cout << thisLeft << " - " << otherLeft << "\n";
-            std::cout << thisRight << " - " << otherRight << "\n";
-            std::cout << thisTop << " - " << otherTop << "\n";
-            std::cout << thisBottom << " - " << otherBottom << "\n";
+            // std::cout << "collision! " << m_name << "\n";
+            // std::cout << scale.x << ", " << scale.y << " - " << other.scale.x << ", " << other.scale.y << "\n";
+            // std::cout << position.x << ", " << position.y << " - " << other.position.x << ", " << other.position.y << "\n";
+            // std::cout << thisLeft << " - " << otherLeft << "\n";
+            // std::cout << thisRight << " - " << otherRight << "\n";
+            // std::cout << thisTop << " - " << otherTop << "\n";
+            // std::cout << thisBottom << " - " << otherBottom << "\n";
             return true;
         }
         return false;
