@@ -137,6 +137,7 @@ namespace engine
 
                 return e;
         }
+        return nullptr;
     }
     // ################ PRIVATE ################
 }
