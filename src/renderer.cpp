@@ -1,14 +1,14 @@
 #include "renderer.h"
 
 // Macro to check for OpenGL errors
-#define GL_CHECK()                                                                                                     \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        GLenum err = glGetError();                                                                                     \
-        if (err != GL_NO_ERROR)                                                                                        \
-        {                                                                                                              \
+#define GL_CHECK()                                                                                                         \
+    do                                                                                                                     \
+    {                                                                                                                      \
+        GLenum err = glGetError();                                                                                         \
+        if (err != GL_NO_ERROR)                                                                                            \
+        {                                                                                                                  \
             std::cerr << "OpenGL error (" << __FILE__ << ":" << __LINE__ << "): " << glewGetErrorString(err) << std::endl; \
-        }                                                                                                              \
+        }                                                                                                                  \
     } while (0)
 
 Renderer::Renderer()
@@ -29,6 +29,8 @@ Renderer::~Renderer()
 
 void Renderer::render(GLuint shader, GLuint vao, int verticesCount)
 {
+    if (!vao || !shader)
+        return;
     glUseProgram(shader);
     GL_CHECK();
     glBindVertexArray(vao);
