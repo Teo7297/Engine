@@ -17,7 +17,7 @@ namespace engine
         void start();
         void closeApp() override;
         int getKey(int key) override;
-        std::shared_ptr<Entity> findEntityByName(std::string &name);
+        std::shared_ptr<Entity> findEntityByName(std::string &name) const override;
 
         template <typename EntityType>
         std::shared_ptr<EntityType> makeEntity(std::string name)
