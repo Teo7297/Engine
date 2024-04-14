@@ -1,10 +1,13 @@
 set( _freetype_HEADER_SEARCH_DIRS
 "${CMAKE_SOURCE_DIR}/includes"
 "${CMAKE_SOURCE_DIR}/third_party/freetype"
+"${CMAKE_SOURCE_DIR}/submodules/Engine/third_party/freetype"
 "C:/Program Files (x86)/freetype" )
 set( _freetype_LIB_SEARCH_DIRS
 "${CMAKE_SOURCE_DIR}/lib"
-"${CMAKE_SOURCE_DIR}/third_party/freetype" )
+"${CMAKE_SOURCE_DIR}/third_party/freetype" 
+"${CMAKE_SOURCE_DIR}/submodules/Engine/third_party/freetype" 
+)
 
 
 # Search for the header

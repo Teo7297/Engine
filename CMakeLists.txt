@@ -28,9 +28,10 @@ find_package(GLFW3 REQUIRED) # statically linked
 
 find_package(FREETYPE REQUIRED)
 
-include_directories(
+target_include_directories( ${PROJECT_NAME} PUBLIC
     include
     ${FREETYPE_INCLUDE_DIR}
+    ${GLFW3_INCLUDE_DIR}
     "third_party/freetype"
     "third_party"
     )
@@ -46,14 +47,19 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # This copy is for dll (dynamic linking)
 # Set source directory
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/third_party/glew/bin/Release/x64/glew32.dll")
+if(NOT EXISTS ${SOURCE_DIR})
+    set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/submodules/Engine/third_party/glew/bin/Release/x64/glew32.dll")
+endif()
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${SOURCE_DIR}
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+${SOURCE_DIR}
+$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/third_party/freetype/bin/freetype.dll")
-
+if(NOT EXISTS ${SOURCE_DIR})
+    set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/submodules/Engine/third_party/freetype/bin/freetype.dll")
+endif()
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${SOURCE_DIR}
