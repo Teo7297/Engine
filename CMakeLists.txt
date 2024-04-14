@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.28)
 project(EngineDll VERSION 1.0)
 
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -16,21 +18,48 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 # Define ENGINE_DLL_EXPORTS when building the DLL
 target_compile_definitions(${PROJECT_NAME} PRIVATE ENGINE_DLL_EXPORTS)
 
-# Include directory
-include_directories(include)
-
-# Include GLFW
-include_directories(third_party)
-
-
-find_library(GLFW_LIBRARY glfw3 HINTS ${CMAKE_SOURCE_DIR}/libs ${CMAKE_SOURCE_DIR}/submodules/Engine/libs REQUIRED)
-find_library(GLEW_LIBRARY glew32s HINTS ${CMAKE_SOURCE_DIR}/libs ${CMAKE_SOURCE_DIR}/submodules/Engine/libs REQUIRED)
+# Find GLEW package
+# set(GLEW_USE_STATIC_LIBS ON) # remove this line for dynamic linking
+set(CMAKE_PREFIX_PATH "third_party\\glew")
+find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
+
+find_package(GLFW3 REQUIRED) # statically linked
+
+find_package(FREETYPE REQUIRED)
+
+include_directories(
+    include
+    ${FREETYPE_INCLUDE_DIR}
+    "third_party/freetype"
+    "third_party"
+    )
+
 target_link_libraries(${PROJECT_NAME} PRIVATE 
-    ${GLFW_LIBRARY}
-    ${GLEW_LIBRARY}
-    OpenGL::GL
-)
+        ${GLFW3_LIBRARY}    
+        GLEW::GLEW
+        OpenGL::GL
+        ${FREETYPE_LIBRARY}
+        "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\um\\x64\\opengl32.lib"
+    )
+
+# This copy is for dll (dynamic linking)
+# Set source directory
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/third_party/glew/bin/Release/x64/glew32.dll")
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${SOURCE_DIR}
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/third_party/freetype/bin/freetype.dll")
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${SOURCE_DIR}
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+################################################## TESTS #########################################################
 
 # Define your test source files
 file(GLOB_RECURSE TEST_SOURCES "test/*.cpp")
@@ -44,3 +73,4 @@ target_link_libraries(EngineDllTest PRIVATE ${PROJECT_NAME})
 # Optionally, you can use CTest to automate running your tests
 enable_testing()
 add_test(NAME EngineDllTest COMMAND EngineDllTest)
+################################################## TESTS #########################################################
