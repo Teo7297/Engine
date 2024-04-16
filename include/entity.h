@@ -5,6 +5,8 @@
 namespace engine
 {
     class IInput;
+    class Texture;
+    class Shader;
     class ENGINE_API Entity
     {
     public:
@@ -21,34 +23,16 @@ namespace engine
         virtual bool checkCollision(Entity &other) { return false; };
 
         GLuint getVAO() { return vao; }
-        GLuint getShader() { return shaderProgram; }
         const inline std::string &getName() const { return m_name; }
+        void addTexture(std::shared_ptr<Texture> texture) { m_texture = texture; }
+        std::shared_ptr<Texture> getTexture() { return m_texture; }
+        void addShader(std::shared_ptr<Shader> shader) { m_shader = shader; }
+        std::shared_ptr<Shader> getShader() { return m_shader; }
 
     private:
     public:
         std::vector<float> vertices;
 
-        const char *vertexShaderSource = R"(
-            #version 330 core
-            layout (location = 0) in vec3 aPos;
-            uniform mat4 model;
-            uniform mat4 view;
-            uniform mat4 projection; 
-
-            void main() {
-                gl_Position = projection * view * model * vec4(aPos, 1.0);
-            }
-        )";
-
-        const char *fragmentShaderSource = R"(
-            #version 330 core
-            out vec4 FragColor;
-            void main() {
-                FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-            }
-        )";
-
-        GLuint shaderProgram{0};
         GLuint vao{0};
 
         glm::vec3 position{0, 0, 0};
@@ -61,5 +45,7 @@ namespace engine
     protected:
         IInput *m_input; // do not delete manually, this is managed by the engine
         std::string m_name;
+        std::shared_ptr<Texture> m_texture;
+        std::shared_ptr<Shader> m_shader;
     };
 }

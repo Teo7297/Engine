@@ -66,8 +66,10 @@ int main()
 
     auto e = app.makeEntity<ent>("paddle");
     e->scale = {15, 100, 0};
+    // e->addShader();
     auto e2 = app.makeEntity<ent>("ball");
     e2->scale = {15, 15, 0};
+    // e2->addShader()
 
     app.start();
 

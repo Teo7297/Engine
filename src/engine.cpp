@@ -1,6 +1,8 @@
 #include "engine.h"
 #include "renderer.h"
 #include "entity.h"
+#include "shader.h"
+#include "Texture.h"
 
 namespace engine
 {
@@ -19,6 +21,10 @@ namespace engine
             std::cerr << "Failed to initialize GLFW" << std::endl;
             return;
         }
+        // Set GLFW window hints
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // OpenGL 4.6
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Use core profile
 
         // Create a GLFW window
         m_window = glfwCreateWindow(m_width, m_height, appName.c_str(), NULL, NULL);
@@ -53,23 +59,8 @@ namespace engine
         {
             if (e->drawEnabled)
             {
-
-                // Create and compile the vertex shader
-                auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
-                glShaderSource(vertexShader, 1, &(e->vertexShaderSource), NULL);
-                glCompileShader(vertexShader);
-
-                // Create and compile the fragment shader
-                auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-                glShaderSource(fragmentShader, 1, &(e->fragmentShaderSource), NULL);
-                glCompileShader(fragmentShader);
-
-                // Link the vertex and fragment shader into a shader program
-                e->shaderProgram = glCreateProgram();
-                glAttachShader(e->shaderProgram, vertexShader);
-                glAttachShader(e->shaderProgram, fragmentShader);
-                glLinkProgram(e->shaderProgram);
-                glUseProgram(e->shaderProgram);
+                auto shader = e->getShader();
+                shader->Bind();
 
                 // Create VBO and VAO
                 GLuint VBO;
@@ -81,12 +72,15 @@ namespace engine
                 glBufferData(GL_ARRAY_BUFFER, e->vertices.size() * sizeof(float), e->vertices.data(), GL_STATIC_DRAW);
 
                 // Specify vertex attributes
-                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
                 glEnableVertexAttribArray(0);
+                glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+                glEnableVertexAttribArray(1);
 
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
                 glBindVertexArray(0);
-                glUseProgram(0);
+
+                shader->Unbind();
             }
 
             if (e->physicsEnabled)
@@ -105,7 +99,7 @@ namespace engine
             {
                 e->update(frameTime.count());
                 if (e->drawEnabled)
-                    m_renderer->render(e->getShader(), e->getVAO(), e->verticesCount);
+                    m_renderer->render(e->getShader(), e->getVAO(), e->verticesCount, e->getTexture());
             }
             for (auto e : m_physicsScene)
             {

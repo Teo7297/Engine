@@ -36,6 +36,7 @@ target_include_directories( ${PROJECT_NAME} PUBLIC
     "third_party"
     )
 
+target_link_options(${PROJECT_NAME} PRIVATE "/NODEFAULTLIB:MSVCRT")
 target_link_libraries(${PROJECT_NAME} PRIVATE 
         ${GLFW3_LIBRARY}    
         GLEW::GLEW
@@ -43,6 +44,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         ${FREETYPE_LIBRARY}
         "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\um\\x64\\opengl32.lib"
     )
+
 
 # This copy is for dll (dynamic linking)
 # Set source directory
@@ -68,15 +70,21 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 ################################################## TESTS #########################################################
 
 # Define your test source files
-file(GLOB_RECURSE TEST_SOURCES "test/*.cpp")
+# file(GLOB_RECURSE TEST_SOURCES "test/EngineDllTest.cpp")
 
 # Add an executable target for your test
-add_executable(EngineDllTest ${TEST_SOURCES})
+add_executable(TextureTest "test/TextureTest.cpp")
+add_test(NAME TextureTest COMMAND TextureTest)
+target_link_libraries(TextureTest PRIVATE ${PROJECT_NAME})
 
-# Link your test executable with the library you want to test
+add_executable(EngineDllTest "test/EngineDllTest.cpp")
+add_test(NAME EngineDllTest COMMAND EngineDllTest)
 target_link_libraries(EngineDllTest PRIVATE ${PROJECT_NAME})
 
-# Optionally, you can use CTest to automate running your tests
+add_executable(TextRenderingTest "test/TextRenderingTest.cpp")
+add_test(NAME TextRenderingTest COMMAND TextRenderingTest)
+target_link_libraries(TextRenderingTest PRIVATE ${PROJECT_NAME})
+
+
 enable_testing()
-add_test(NAME EngineDllTest COMMAND EngineDllTest)
 ################################################## TESTS #########################################################

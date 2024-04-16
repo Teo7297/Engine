@@ -5,3 +5,5 @@
 #include "entity.h"
 #include "rectangle.h"
 #include "mathExtension.h"
+#include "texture.h"
+#include "shader.h"

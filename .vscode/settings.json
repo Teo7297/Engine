@@ -66,6 +66,12 @@
         "cstdarg": "cpp",
         "functional": "cpp",
         "fstream": "cpp",
-        "engine": "cpp"
+        "engine": "cpp",
+        "filesystem": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "xtree": "cpp"
     }
 }

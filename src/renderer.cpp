@@ -1,4 +1,6 @@
 #include "renderer.h"
+#include "texture.h"
+#include "shader.h"
 
 // Macro to check for OpenGL errors
 #define GL_CHECK()                                                                                                         \
@@ -27,16 +29,20 @@ Renderer::~Renderer()
     glDeleteShader(fragmentShader);
 }
 
-void Renderer::render(GLuint shader, GLuint vao, int verticesCount)
+void Renderer::render(std::shared_ptr<engine::Shader> shader, GLuint vao, int verticesCount, const std::shared_ptr<engine::Texture> texture)
 {
-    if (!vao || !shader || !verticesCount)
-        return;
-    glUseProgram(shader);
+    texture->activate();
+    texture->bind();
+
+    shader->Bind();
     GL_CHECK();
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, verticesCount);
     GL_CHECK();
     glBindVertexArray(0);
-    glUseProgram(0);
+    shader->Unbind();
+
+    texture->release();
+
     GL_CHECK();
 }
