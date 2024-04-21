@@ -6,7 +6,7 @@
 namespace engine
 {
     Entity::Entity(IInput *input, std::string name)
-        : m_input{input}, m_name{name}, m_texture{nullptr}, m_shader{nullptr}
+        : m_input{input}, m_name{name}, m_texture{nullptr}, m_shader{nullptr}, m_components{std::vector<std::shared_ptr<Entity>>()}
     {
         std::cout << "new entity! " << name << "\n";
     }

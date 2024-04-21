@@ -28,6 +28,7 @@ namespace engine
         std::shared_ptr<Texture> getTexture() { return m_texture; }
         void addShader(std::shared_ptr<Shader> shader) { m_shader = shader; }
         std::shared_ptr<Shader> getShader() { return m_shader; }
+        inline void addComponent(std::shared_ptr<Entity> comp) { m_components.emplace_back(comp); };
 
     private:
     public:
@@ -47,5 +48,6 @@ namespace engine
         std::string m_name;
         std::shared_ptr<Texture> m_texture;
         std::shared_ptr<Shader> m_shader;
+        std::vector<std::shared_ptr<Entity>> m_components;
     };
 }
