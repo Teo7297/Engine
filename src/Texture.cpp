@@ -20,7 +20,6 @@ engine::Texture::Texture(const Path &filename, GLuint slot)
     unsigned char *data = stbi_load(filename.string().c_str(), &width, &height, &nrChannels, 0);
     if (data)
     {
-        std::cout << filename.extension() << "\n";
         GLenum format = filename.extension().compare(".png") == 0 ? GL_RGBA : GL_RGB;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);

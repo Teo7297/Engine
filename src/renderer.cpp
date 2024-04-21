@@ -31,8 +31,11 @@ Renderer::~Renderer()
 
 void Renderer::render(std::shared_ptr<engine::Shader> shader, GLuint vao, int verticesCount, const std::shared_ptr<engine::Texture> texture)
 {
-    texture->activate();
-    texture->bind();
+    if (texture)
+    {
+        texture->activate();
+        texture->bind();
+    }
 
     shader->Bind();
     GL_CHECK();
@@ -42,7 +45,8 @@ void Renderer::render(std::shared_ptr<engine::Shader> shader, GLuint vao, int ve
     glBindVertexArray(0);
     shader->Unbind();
 
-    texture->release();
+    if (texture)
+        texture->release();
 
     GL_CHECK();
 }

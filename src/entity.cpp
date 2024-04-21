@@ -27,7 +27,13 @@ namespace engine
             m_shader->SetUniform("model", model);
             m_shader->SetUniform("view", view);
             m_shader->SetUniform("projection", proj);
-            m_shader->SetUniform("textureSlot", (int)(m_texture->getSlot())); // todo: it doesn't make sense to set this every frame
+            if (m_texture)
+            {
+                m_shader->SetUniform("textureAvailable", true);
+                m_shader->SetUniform("textureSlot", (int)(m_texture->getSlot())); // todo: it doesn't make sense to set this every frame
+            }
+            else
+                m_shader->SetUniform("textureAvailable", false);
 
             m_shader->Unbind();
         }

@@ -25,8 +25,8 @@ public:
 
 const Path tPathAvatar = "C:\\Users\\teoca\\OneDrive\\Immagini\\avatar.png";
 const Path tPathBricks = "C:\\Users\\teoca\\Desktop\\GamesFromScratch\\Engine\\textures\\bricks.jpg";
-const char *vPath = "C:\\Users\\teoca\\Desktop\\GamesFromScratch\\Engine\\shaders/simple_texture.vs";
-const char *fPath = "C:\\Users\\teoca\\Desktop\\GamesFromScratch\\Engine\\shaders/simple_texture.fs";
+const char *vPath = "C:\\Users\\teoca\\Desktop\\GamesFromScratch\\Engine\\shaders\\simple_texture.vs";
+const char *fPath = "C:\\Users\\teoca\\Desktop\\GamesFromScratch\\Engine\\shaders\\simple_texture.fs";
 
 int main()
 {
