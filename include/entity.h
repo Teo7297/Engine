@@ -20,6 +20,7 @@ namespace engine
 
         virtual void init(){};
         virtual void update(const float frameTime);
+        virtual void lateUpdate(const float frameTime){};
         virtual bool checkCollision(Entity &other) { return false; };
 
         GLuint getVAO() { return vao; }

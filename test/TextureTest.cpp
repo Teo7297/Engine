@@ -15,11 +15,25 @@ public:
 
     void update(const float frameTime) override
     {
-        Rectangle::update(frameTime);
         if (m_input->getKey(GLFW_KEY_UP))
         {
             position += 0.5f * glm::vec3{0, 1, 0} * frameTime;
         }
+        if (m_input->getKey(GLFW_KEY_DOWN))
+        {
+            position += 0.5f * glm::vec3{0, -1, 0} * frameTime;
+        }
+        if (m_input->getKey(GLFW_KEY_ESCAPE))
+        {
+            m_input->closeApp();
+        }
+
+        Rectangle::update(frameTime); // always call this as last, transformation matrices are set here! this is where update takes effect before drawing
+    }
+
+    void lateUpdate(const float frameTime) override
+    {
+        m_input->renderText("_______", position + glm::vec3{100, 0, 0});
     }
 };
 
