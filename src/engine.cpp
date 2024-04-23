@@ -101,6 +101,8 @@ namespace engine
             m_lastFrameTime = endTime;
             // std::cout << 1000.0 / frameTime.count() << " FPS\n";
             glClear(GL_COLOR_BUFFER_BIT);
+
+            //? Physics Loop
             for (auto e : m_physicsScene)
             {
                 for (auto e2 : m_physicsScene)
@@ -109,11 +111,18 @@ namespace engine
                         e->checkCollision(*e2);
                 }
             }
+
+            //? Update + Draw Loop
             for (auto e : m_scene)
             {
                 e->update(frameTime.count());
                 if (e->drawEnabled)
                     m_renderer->render(e->getShader(), e->getVAO(), e->verticesCount, e->getTexture());
+            }
+
+            //? Late Update Loop
+            for (auto &e : m_scene)
+            {
                 e->lateUpdate(frameTime.count());
             }
 

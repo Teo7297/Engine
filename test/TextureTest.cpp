@@ -33,7 +33,7 @@ public:
 
     void lateUpdate(const float frameTime) override
     {
-        m_input->renderText("_______", position + glm::vec3{100, 0, 0});
+        m_input->renderText("_______", position + glm::vec3{100, 30, 0});
     }
 };
 
