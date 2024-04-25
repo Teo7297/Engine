@@ -36,6 +36,17 @@ namespace engine
         }
         glfwMakeContextCurrent(m_window);
 
+        // Initialize ImGui
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO &io = ImGui::GetIO();
+        (void)io;
+        ImGui::StyleColorsDark();
+
+        // Initialize ImGui for GLFW and OpenGL
+        ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+        ImGui_ImplOpenGL3_Init("#version 130");
+
         // Initialize GLEW
         if (glewInit() != GLEW_OK)
         {
@@ -100,7 +111,24 @@ namespace engine
             std::chrono::duration<double, std::milli> frameTime = endTime - m_lastFrameTime;
             m_lastFrameTime = endTime;
             // std::cout << 1000.0 / frameTime.count() << " FPS\n";
+
+            // Start the ImGui frame
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+            // Create a simple ImGui window
+            ImGui::Begin("Hello, ImGui!");
+
+            // Add UI elements
+            ImGui::Text("This is a simple ImGui window.");
+            if (ImGui::Button("Click me!"))
+                // Do something when the button is clicked
+                std::cout << "CLICK!\n";
+            // End the ImGui window
+            ImGui::End();
             glClear(GL_COLOR_BUFFER_BIT);
+            
 
             //? Physics Loop
             for (auto e : m_physicsScene)
@@ -125,6 +153,9 @@ namespace engine
             {
                 e->lateUpdate(frameTime.count());
             }
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwPollEvents();
             glfwSwapBuffers(m_window);

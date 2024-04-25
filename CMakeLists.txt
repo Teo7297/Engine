@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add your source files
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp" "third_party/imgui/*.cpp") # TODO find imgui
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -43,6 +43,7 @@ target_include_directories( ${PROJECT_NAME} PUBLIC
     ${FREETYPE_INCLUDE_DIR}
     ${GLFW3_INCLUDE_DIR}
     "third_party/freetype"
+    "third_party/imgui"
     "third_party"
     )
 

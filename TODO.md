@@ -1,15 +1,15 @@
 # TODO
 ## Current tasks
 
-- [ ] Complete texture support
+- [x] Complete texture support
     - [x] Add texture coordinates
     - [x] Fix the shaders so they use texture coords if available
     - [x] Add shaders from application level NOT in engine.cpp
     - [x] Make textures optional
 
 
-- [ ] Add text rendering support
-  - [ ] Batch render text
+- [x] Add text rendering support
+  - [x] Batch render text
 - [ ] Change IInput to IEngine
 - [ ] Include Dear ImGUI
     - [ ] Make it simple on application side to add GUI stuff
