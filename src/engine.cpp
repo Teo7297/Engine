@@ -182,7 +182,7 @@ namespace engine
             }
 
             //? Update + Draw Loop
-            for (auto e : m_scene)
+            for (auto &e : m_scene)
             {
                 e->update(frameTime.count());
                 if (e->drawEnabled)
@@ -190,9 +190,23 @@ namespace engine
             }
 
             //? Late Update Loop
-            for (auto &e : m_scene)
+            for (int id = 0; id < m_scene.size(); id++)
             {
-                e->lateUpdate(frameTime.count());
+                auto entity = m_scene[id];
+                entity->lateUpdate(frameTime.count());
+                if (entity->toDestroy)
+                    m_entitiesToDestroy.push(id);
+            }
+
+            while (!m_entitiesToDestroy.empty())
+            {
+                int toDestroy = m_entitiesToDestroy.front();
+
+                if (m_scene[toDestroy]->physicsEnabled)
+                    m_physicsScene.erase(m_physicsScene.begin() + toDestroy);
+                m_scene.erase(m_scene.begin() + toDestroy);
+
+                m_entitiesToDestroy.pop();
             }
 
             renderGUI();

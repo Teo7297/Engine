@@ -21,6 +21,7 @@ namespace engine
         virtual void init(){};
         virtual void update(const float frameTime);
         virtual void lateUpdate(const float frameTime){};
+        virtual void destroy() { toDestroy = true; };
         virtual bool checkCollision(Entity &other) { return false; };
 
         GLuint getVAO() { return vao; }
@@ -43,6 +44,7 @@ namespace engine
         int verticesCount = 3;
         bool physicsEnabled = false;
         bool drawEnabled = true;
+        bool toDestroy = false;
 
     protected:
         IInput *m_input; // do not delete manually, this is managed by the engine

@@ -43,6 +43,11 @@ public:
         {
             m_input->setBackgroundColor(Colors::BLACK);
         }
+        if (m_input->getKey(GLFW_KEY_DELETE))
+        {
+            if (!m_name.compare("bricks"))
+                destroy();
+        }
 
         Rectangle::update(frameTime); // always call this as last, transformation matrices are set here! this is where update takes effect before drawing
     }
@@ -64,21 +69,23 @@ int main()
 
     auto app = engine::Engine("test app");
 
-    // auto e = app.makeEntity<ent>("bricks");
-    // e->scale = {300, 300, 0};
-    // e->position = {50, 150, 0};
-    // auto shader = std::make_shared<engine::Shader>(vPath, fPath);
-    // e->addShader(shader);
-    // auto t = std::make_shared<engine::Texture>(tPathBricks);
-    // e->addTexture(t);
+    {
+        auto e = app.makeEntity<ent>("bricks");
+        e->scale = {300, 300, 0};
+        e->position = {50, 150, 0};
+        auto shader = std::make_shared<engine::Shader>(vPath, fPath);
+        e->addShader(shader);
+        auto t = std::make_shared<engine::Texture>(tPathBricks);
+        e->addTexture(t);
 
-    auto e2 = app.makeEntity<ent>("avatar");
-    e2->scale = {300, 300, 0};
-    e2->position = {400, 150, 0};
-    auto shader2 = std::make_shared<engine::Shader>(vPath, fPath);
-    e2->addShader(shader2);
-    auto t2 = std::make_shared<engine::Texture>(tPathAvatar, 1);
-    e2->addTexture(t2);
+        auto e2 = app.makeEntity<ent>("avatar");
+        e2->scale = {300, 300, 0};
+        e2->position = {400, 150, 0};
+        auto shader2 = std::make_shared<engine::Shader>(vPath, fPath);
+        e2->addShader(shader2);
+        auto t2 = std::make_shared<engine::Texture>(tPathAvatar, 1);
+        e2->addTexture(t2);
+    }
 
     app.start();
 

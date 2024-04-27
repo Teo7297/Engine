@@ -54,6 +54,7 @@ namespace engine
         std::vector<std::shared_ptr<Entity>> m_scene;
         std::vector<std::shared_ptr<Entity>> m_physicsScene;
         std::chrono::high_resolution_clock::time_point m_lastFrameTime;
+        std::queue<int> m_entitiesToDestroy;
 
         // Text rendering vars
         const int ARRAY_LIMIT = 250;
