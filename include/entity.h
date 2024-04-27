@@ -24,6 +24,12 @@ namespace engine
         virtual void destroy() { toDestroy = true; };
         virtual bool checkCollision(Entity &other) { return false; };
 
+        inline void setID(uint32_t id)
+        {
+            if (!m_ID)
+                m_ID = id;
+        };
+        const inline uint32_t getID() const { return m_ID; };
         GLuint getVAO() { return vao; }
         const inline std::string &getName() const { return m_name; }
         void addTexture(std::shared_ptr<Texture> texture) { m_texture = texture; }
@@ -47,6 +53,7 @@ namespace engine
         bool toDestroy = false;
 
     protected:
+        uint32_t m_ID;
         IInput *m_input; // do not delete manually, this is managed by the engine
         std::string m_name;
         std::shared_ptr<Texture> m_texture;

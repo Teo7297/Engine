@@ -73,7 +73,9 @@ namespace engine
           m_renderer{nullptr},
           m_scene{},
           m_physicsScene{},
-          m_lastFrameTime{}
+          m_lastFrameTime{},
+          m_entitiesToDestroy{},
+          m_nextEntityID{1}
     {
         // Initialize GLFW
         if (!glfwInit())
@@ -190,21 +192,33 @@ namespace engine
             }
 
             //? Late Update Loop
-            for (int id = 0; id < m_scene.size(); id++)
+            for (auto &e : m_scene)
             {
-                auto entity = m_scene[id];
-                entity->lateUpdate(frameTime.count());
-                if (entity->toDestroy)
-                    m_entitiesToDestroy.push(id);
+                e->lateUpdate(frameTime.count());
+                if (e->toDestroy)
+                    m_entitiesToDestroy.push(e->getID());
             }
 
+            //? Destroy
             while (!m_entitiesToDestroy.empty())
             {
-                int toDestroy = m_entitiesToDestroy.front();
+                int id = m_entitiesToDestroy.front();
 
-                if (m_scene[toDestroy]->physicsEnabled)
-                    m_physicsScene.erase(m_physicsScene.begin() + toDestroy);
-                m_scene.erase(m_scene.begin() + toDestroy);
+                // Erase from scene
+                m_scene.erase(
+                    std::remove_if(
+                        m_scene.begin(), m_scene.end(),
+                        [&](const auto &e)
+                        { return e->getID() == id; }),
+                    m_scene.end());
+
+                // Erase from physics scene
+                m_physicsScene.erase(
+                    std::remove_if(
+                        m_physicsScene.begin(), m_physicsScene.end(),
+                        [&](const auto &e)
+                        { return e->getID() == id; }),
+                    m_physicsScene.end());
 
                 m_entitiesToDestroy.pop();
             }

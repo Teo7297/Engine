@@ -37,6 +37,7 @@ namespace engine
             static_assert(std::is_base_of<engine::Entity, EntityType>::value, "EntityType must extend engine::Entity");
 
             std::shared_ptr<EntityType> entity = std::make_shared<EntityType>(this, name);
+            entity->setID(m_nextEntityID++);
             m_scene.push_back(entity);
             return entity;
         }
@@ -54,7 +55,8 @@ namespace engine
         std::vector<std::shared_ptr<Entity>> m_scene;
         std::vector<std::shared_ptr<Entity>> m_physicsScene;
         std::chrono::high_resolution_clock::time_point m_lastFrameTime;
-        std::queue<int> m_entitiesToDestroy;
+        std::queue<uint32_t> m_entitiesToDestroy;
+        uint32_t m_nextEntityID;
 
         // Text rendering vars
         const int ARRAY_LIMIT = 250;
