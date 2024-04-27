@@ -14,6 +14,7 @@ uniform float thickness = 0.55f;
 uniform float outline_thickness = 0.51f;
 uniform float softness = 0.035f;
 uniform float outline_softness = 0.065f;
+uniform vec4 outline_color = {0,0,0,1};
 
 void main()
 {    
