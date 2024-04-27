@@ -411,7 +411,7 @@ namespace engine
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
-        m_textShader = std::make_shared<Shader>("../shaders/text_yt.vs", "../shaders/text_yt.fs");
+        m_textShader = std::make_shared<Shader>("../../shaders/text_yt.vs", "../../shaders/text_yt.fs");
 
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_width), 0.0f, static_cast<float>(m_height));
         m_textShader->Bind();
