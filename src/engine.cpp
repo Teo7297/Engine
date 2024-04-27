@@ -251,24 +251,24 @@ namespace engine
 
             if (*c == '\n')
             {
-                cachePosition.y -= ((ch.Size.y)) * 1.3 * scale;
+                cachePosition.y -= ((ch.Size.y)) * 1.3 * realScale;
                 cachePosition.x = copyX;
             }
             else if (*c == ' ')
             {
-                cachePosition.x += (ch.Advance >> 6) * scale;
+                cachePosition.x += (ch.Advance >> 6) * realScale;
             }
             else
             {
-                float xpos = cachePosition.x + ch.Bearing.x * scale;
-                float ypos = cachePosition.y - (256 - ch.Bearing.y) * scale;
+                float xpos = cachePosition.x + ch.Bearing.x * realScale;
+                float ypos = cachePosition.y - (256 - ch.Bearing.y) * realScale;
 
-                m_transforms[workingIndex] = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0)) * glm::scale(glm::mat4(1.0f), glm::vec3(256 * scale, 256 * scale, 0));
+                m_transforms[workingIndex] = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0)) * glm::scale(glm::mat4(1.0f), glm::vec3(256 * realScale, 256 * realScale, 0));
                 m_letterMap[workingIndex] = ch.TextureID;
 
                 // render quad
                 // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-                cachePosition.x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+                cachePosition.x += (ch.Advance >> 6) * realScale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
                 workingIndex++;
                 if (workingIndex == ARRAY_LIMIT)
                 {
@@ -320,7 +320,8 @@ namespace engine
         }
 
         // set size to load glyphs as
-        FT_Set_Pixel_Sizes(face, 256, 256);
+        int fontSize = 256;
+        FT_Set_Pixel_Sizes(face, fontSize, fontSize);
 
         // disable byte-alignment restriction
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -328,7 +329,7 @@ namespace engine
         glGenTextures(1, &m_fontTextures);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D_ARRAY, m_fontTextures);
-        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8, 256, 256, 128, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
+        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8, fontSize, fontSize, 128, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
 
         // load first 128 characters of ASCII set
         for (unsigned char c = 0; c < 128; c++)

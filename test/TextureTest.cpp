@@ -49,7 +49,7 @@ public:
 
     void lateUpdate(const float frameTime) override
     {
-        m_input->renderText("0123456789!.?/", position);
+        m_input->renderText("0123456789!.?/", position, 1);
     }
 };
 
