@@ -49,7 +49,7 @@ public:
 
     void lateUpdate(const float frameTime) override
     {
-        m_input->renderText("TEST TEXT ciao :)", position + glm::vec3{100, 30, 0});
+        m_input->renderText("0123456789!.?/", position);
     }
 };
 
@@ -64,13 +64,13 @@ int main()
 
     auto app = engine::Engine("test app");
 
-    auto e = app.makeEntity<ent>("bricks");
-    e->scale = {300, 300, 0};
-    e->position = {50, 150, 0};
-    auto shader = std::make_shared<engine::Shader>(vPath, fPath);
-    e->addShader(shader);
-    auto t = std::make_shared<engine::Texture>(tPathBricks);
-    e->addTexture(t);
+    // auto e = app.makeEntity<ent>("bricks");
+    // e->scale = {300, 300, 0};
+    // e->position = {50, 150, 0};
+    // auto shader = std::make_shared<engine::Shader>(vPath, fPath);
+    // e->addShader(shader);
+    // auto t = std::make_shared<engine::Texture>(tPathBricks);
+    // e->addTexture(t);
 
     auto e2 = app.makeEntity<ent>("avatar");
     e2->scale = {300, 300, 0};
