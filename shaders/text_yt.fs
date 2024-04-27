@@ -19,7 +19,6 @@ uniform vec4 outline_color = {0,0,0,1};
 void main()
 {    
     float glyphShape = texture(text, vec3(fs_in.TexCoords.xy,letterMap[fs_in.index])).r;
-    // color = vec4(textColor, glyphShape);
     float outline = smoothstep(outline_thickness - outline_softness, outline_thickness + outline_softness, glyphShape);
     glyphShape = smoothstep(1.0 - thickness - softness, 1.0 - thickness + softness, glyphShape);
     
