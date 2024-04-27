@@ -9,10 +9,10 @@ float my_color[4]{0.5, 0.5, 0};
 void imgui_sample1()
 {
     // Create a window called "My First Tool", with a menu bar.
-    if(!active)
+    if (!active)
         return;
     ImGui::Begin("My First Tool", &active, ImGuiWindowFlags_MenuBar);
-    
+
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -411,7 +411,7 @@ namespace engine
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
-        m_textShader = std::make_shared<Shader>("../../shaders/text_yt.vs", "../../shaders/text_yt.fs");
+        m_textShader = std::make_shared<Shader>("../shaders/text_yt.vs", "../shaders/text_yt.fs");
 
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_width), 0.0f, static_cast<float>(m_height));
         m_textShader->Bind();
@@ -427,7 +427,7 @@ namespace engine
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        imgui_sample2(); //todo: maybe here we want some kind of list of GUIs
+        imgui_sample2(); // todo: maybe here we want some kind of list of GUIs
         imgui_sample1();
 
         ImGui::Render();
