@@ -10,6 +10,7 @@ namespace engine
     private:
         GLuint m_id = -1;
         GLuint m_slot = 0;
+        bool m_isTransparent = false;
 
     public:
         Texture(const Path &filename, GLuint slot = 0);

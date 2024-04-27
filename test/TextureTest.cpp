@@ -27,13 +27,29 @@ public:
         {
             m_input->closeApp();
         }
+        if (m_input->getKey(GLFW_KEY_R))
+        {
+            m_input->setBackgroundColor(Colors::RED);
+        }
+        if (m_input->getKey(GLFW_KEY_G))
+        {
+            m_input->setBackgroundColor(Colors::GREEN);
+        }
+        if (m_input->getKey(GLFW_KEY_B))
+        {
+            m_input->setBackgroundColor(Colors::BLUE);
+        }
+        if (m_input->getKey(GLFW_KEY_0))
+        {
+            m_input->setBackgroundColor(Colors::BLACK);
+        }
 
         Rectangle::update(frameTime); // always call this as last, transformation matrices are set here! this is where update takes effect before drawing
     }
 
     void lateUpdate(const float frameTime) override
     {
-        m_input->renderText("_______", position + glm::vec3{100, 30, 0});
+        m_input->renderText("TEST TEXT ciao :)", position + glm::vec3{100, 30, 0});
     }
 };
 

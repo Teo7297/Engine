@@ -29,6 +29,7 @@ namespace engine
         int getKey(int key) override;
         std::shared_ptr<Entity> findEntityByName(const std::string &name) const override;
         void renderText(const std::string text, const glm::vec3 position, const float scale = .5f, const Color color = Colors::GREEN) override;
+        void setBackgroundColor(const Color color) override;
 
         template <typename EntityType>
         std::shared_ptr<EntityType> makeEntity(std::string name)
@@ -42,7 +43,8 @@ namespace engine
 
     private:
         /// @brief For now, initializes the library and loads the font as a texture array. it also initializes VAO, VBO and vectors used for batch rendering. this has to be splitted better in future
-        void initFreeType();
+        inline void initFreeType();
+        inline void renderGUI() const;
 
     public:
     private:
