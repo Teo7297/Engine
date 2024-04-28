@@ -45,7 +45,8 @@ namespace engine
     private:
         /// @brief For now, initializes the library and loads the font as a texture array. it also initializes VAO, VBO and vectors used for batch rendering. this has to be splitted better in future
         inline void initFreeType();
-        inline void renderGUI() const;
+        inline void renderGUI();
+        void imgui_debugWindow();
 
     public:
     private:
@@ -67,5 +68,9 @@ namespace engine
         unsigned int VAO, VBO;
         std::vector<glm::mat4> m_transforms;
         std::vector<int> m_letterMap;
+
+        // Debug
+        bool m_showDebugUI{false};
+        double m_frameTime{-1.0};
     };
 }

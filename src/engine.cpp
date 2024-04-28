@@ -4,66 +4,6 @@
 #include "shader.h"
 #include "Texture.h"
 
-bool active = true;
-float my_color[4]{0.5, 0.5, 0};
-void imgui_sample1()
-{
-    // Create a window called "My First Tool", with a menu bar.
-    if (!active)
-        return;
-    ImGui::Begin("My First Tool", &active, ImGuiWindowFlags_MenuBar);
-
-    if (ImGui::BeginMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            if (ImGui::MenuItem("Open..", "Ctrl+O"))
-            { /* Do stuff */
-            }
-            if (ImGui::MenuItem("Save", "Ctrl+S"))
-            { /* Do stuff */
-            }
-            if (ImGui::MenuItem("Close", "Ctrl+W"))
-            {
-                active = false;
-            }
-            ImGui::EndMenu();
-        }
-        ImGui::EndMenuBar();
-    }
-
-    // Edit a color stored as 4 floats
-    ImGui::ColorEdit4("Color", my_color);
-
-    // Generate samples and plot them
-    float samples[100];
-    for (int n = 0; n < 100; n++)
-        samples[n] = sinf(n * 0.2f + ImGui::GetTime() * 1.5f);
-    ImGui::PlotLines("Samples", samples, 100);
-
-    // Display contents in a scrolling region
-    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Important Stuff");
-    ImGui::BeginChild("Scrolling");
-    for (int n = 0; n < 50; n++)
-        ImGui::Text("%04d: Some text", n);
-    ImGui::EndChild();
-    ImGui::End();
-}
-
-void imgui_sample2()
-{
-    // Create a simple ImGui window
-    ImGui::Begin("Hello, ImGui!");
-
-    // Add UI elements
-    ImGui::Text("This is a simple ImGui window.");
-    if (ImGui::Button("Click me!"))
-        // Do something when the button is clicked
-        std::cout << "CLICK!\n";
-    // End the ImGui window
-    ImGui::End();
-}
-
 namespace engine
 {
     Engine::Engine(std::string appName)
@@ -127,7 +67,8 @@ namespace engine
     {
     }
 
-    // ################ PUBLIC ################
+// ################ PUBLIC ################
+#pragma region PUBLIC
     void Engine::start()
     {
         m_lastFrameTime = std::chrono::high_resolution_clock::now();
@@ -169,6 +110,7 @@ namespace engine
         {
             auto endTime = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double, std::milli> frameTime = endTime - m_lastFrameTime;
+            m_frameTime = frameTime.count();
             m_lastFrameTime = endTime;
 
             glClear(GL_COLOR_BUFFER_BIT);
@@ -186,7 +128,7 @@ namespace engine
             //? Update + Draw Loop
             for (auto &e : m_scene)
             {
-                e->update(frameTime.count());
+                e->update(m_frameTime);
                 if (e->drawEnabled)
                     m_renderer->render(e->getShader(), e->getVAO(), e->verticesCount, e->getTexture());
             }
@@ -194,7 +136,7 @@ namespace engine
             //? Late Update Loop
             for (auto &e : m_scene)
             {
-                e->lateUpdate(frameTime.count());
+                e->lateUpdate(m_frameTime);
                 if (e->toDestroy)
                     m_entitiesToDestroy.push(e->getID());
             }
@@ -322,6 +264,8 @@ namespace engine
     {
         glClearColor(color.r, color.g, color.b, 1.f);
     }
+#pragma endregion
+#pragma region PRIVATE
     // ################ PRIVATE ################
 
     void Engine::initFreeType()
@@ -449,17 +393,22 @@ namespace engine
         m_textShader->Unbind();
     }
 
-    void Engine::renderGUI() const
+    void Engine::renderGUI()
     {
+        if (glfwGetKey(m_window, GLFW_KEY_F12) == GLFW_PRESS)
+            m_showDebugUI = true;
+
         // Start the ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        imgui_sample2(); // todo: maybe here we want some kind of list of GUIs
-        imgui_sample1();
+        if (m_showDebugUI)
+            ImGui::ShowMetricsWindow();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
+
+#pragma endregion
 }
