@@ -119,8 +119,6 @@ namespace engine
             m_frameTime = frameTime.count();
             m_lastFrameTime = endTime;
 
-            glClear(GL_COLOR_BUFFER_BIT);
-
             //? Physics Loop
             for (auto e : m_physicsScene)
             {
@@ -131,6 +129,7 @@ namespace engine
                 }
             }
             glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
+            glClear(GL_COLOR_BUFFER_BIT);
             //? Update + Draw Loop
             for (auto &e : m_scene)
             {
@@ -148,6 +147,7 @@ namespace engine
             }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+            glClear(GL_COLOR_BUFFER_BIT);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_framebufferTexture);
             m_framebufferShader->Bind();
