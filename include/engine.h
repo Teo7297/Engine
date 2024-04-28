@@ -43,14 +43,19 @@ namespace engine
         }
 
     private:
+        static inline void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+        {
+            glViewport(0, 0, width, height);
+        }
         /// @brief For now, initializes the library and loads the font as a texture array. it also initializes VAO, VBO and vectors used for batch rendering. this has to be splitted better in future
         inline void initFreeType();
         inline void renderGUI();
         void imgui_debugWindow();
+        void genBuffersForFBRendering();
 
     public:
     private:
-        unsigned int m_width, m_height;
+        int m_width, m_height;
         GLFWwindow *m_window; // do not delete manually, this is managed by glfw
         std::unique_ptr<Renderer> m_renderer;
         std::vector<std::shared_ptr<Entity>> m_scene;
@@ -58,6 +63,24 @@ namespace engine
         std::chrono::high_resolution_clock::time_point m_lastFrameTime;
         std::queue<uint32_t> m_entitiesToDestroy;
         uint32_t m_nextEntityID;
+
+        // Framebuffer
+        GLuint m_framebuffer{0};
+        GLuint m_framebufferTexture{0};
+        std::shared_ptr<Shader> m_framebufferShader{nullptr};
+        GLuint m_fbVAO{0}, m_fbVBO{0}, m_fbEBO{0};
+        const float m_fbVertices[30]{
+            // Positions      // Texture Coords
+            -1.f, -1.f, 0.0f, 0.0f, 0.0f, // bottom left
+            -1.f, 1.f, 0.0f, 0.0f, 1.0f, // top left
+            1.f, 1.f, 0.0f, 1.0f, 1.0f, // top right
+                                        // Second triangle
+            1.f, 1.f, 0.0f, 1.0f, 1.0f, // top right
+            1.f, -1.f, 0.0f, 1.0f, 0.0f, // bottom right
+            -1.f, -1.f, 0.0f, 0.0f, 0.0f  // bottom left
+        };
+
+        // const unsigned int m_fbIndices[6]{0, 1, 2, 2, 3, 0};
 
         // Text rendering vars
         const int ARRAY_LIMIT = 250;

@@ -13,7 +13,7 @@ file(GLOB_RECURSE SOURCES "src/*.cpp" "third_party/imgui/*.cpp") # TODO find img
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(ENGINE_FONTS_DIR ${CMAKE_SOURCE_DIR}/fonts)
-set(ENGINE_SHADERS_DIR ${CMAKE_SOURCE_DIR}/fonts)
+set(ENGINE_SHADERS_DIR ${CMAKE_SOURCE_DIR}/shaders)
 if(NOT EXISTS ${ENGINE_FONTS_DIR}) # if this does not exists FOR NOW it means we are in a submodule.. FIX THIS!
     set(ENGINE_FONTS_DIR ${CMAKE_SOURCE_DIR}/submodules/Engine/fonts)
     set(ENGINE_SHADERS_DIR ${CMAKE_SOURCE_DIR}/submodules/Engine/shaders)

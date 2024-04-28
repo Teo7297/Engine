@@ -38,6 +38,19 @@ namespace engine
         }
         glfwMakeContextCurrent(m_window);
 
+        // Initialize GLEW
+        if (glewInit() != GLEW_OK)
+        {
+            std::cerr << "Failed to initialize GLEW" << std::endl;
+            return;
+        }
+
+        glfwGetFramebufferSize(m_window, &m_width, &m_height);
+        glViewport(0, 0, m_width, m_height);
+        glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+
+        genBuffersForFBRendering();
+
         // Initialize ImGui
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -48,13 +61,6 @@ namespace engine
         // Initialize ImGui for GLFW and OpenGL
         ImGui_ImplGlfw_InitForOpenGL(m_window, true);
         ImGui_ImplOpenGL3_Init("#version 460");
-
-        // Initialize GLEW
-        if (glewInit() != GLEW_OK)
-        {
-            std::cerr << "Failed to initialize GLEW" << std::endl;
-            return;
-        }
 
         // glEnable(GL_CULL_FACE); //todo: FIX quads are drawn backwards.............
 
@@ -124,7 +130,7 @@ namespace engine
                         e->checkCollision(*e2);
                 }
             }
-
+            glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
             //? Update + Draw Loop
             for (auto &e : m_scene)
             {
@@ -140,6 +146,18 @@ namespace engine
                 if (e->toDestroy)
                     m_entitiesToDestroy.push(e->getID());
             }
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, m_framebufferTexture);
+            m_framebufferShader->Bind();
+
+            glBindVertexArray(m_fbVAO);
+            // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            m_framebufferShader->Unbind();
+            glBindTexture(GL_TEXTURE_2D, 0);
 
             //? Destroy
             while (!m_entitiesToDestroy.empty())
@@ -408,6 +426,55 @@ namespace engine
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    }
+
+    void Engine::genBuffersForFBRendering()
+    {
+        glGenFramebuffers(1, &m_framebuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
+
+        glGenTextures(1, &m_framebufferTexture);
+        glBindTexture(GL_TEXTURE_2D, m_framebufferTexture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_framebufferTexture, 0);
+
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        {
+            std::cerr << "Framebuffer is not complete" << std::endl;
+            exit(-1);
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        m_framebufferShader = std::make_shared<Shader>("../shaders/fb_texture.vs", "../shaders/fb_texture.fs");
+        m_framebufferShader->Bind();
+        m_framebufferShader->SetUniform("textureSampler", 0);
+        m_framebufferShader->Unbind();
+
+        glGenVertexArrays(1, &m_fbVAO);
+        glGenBuffers(1, &m_fbVBO);
+        // glGenBuffers(1, &m_fbEBO);
+
+        glBindVertexArray(m_fbVAO);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_fbVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(m_fbVertices), m_fbVertices, GL_STATIC_DRAW);
+
+        // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbEBO);
+        // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_fbIndices), m_fbIndices, GL_STATIC_DRAW);
+
+        // Position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+        glEnableVertexAttribArray(0);
+        // Texture coord attribute
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
     }
 
 #pragma endregion
